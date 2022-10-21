@@ -16,10 +16,11 @@
         <tbody>
           <tr>
             <th scope="row">{{ review.pk }}</th>
-            <th>{{ review.title }}</th>
-            <th>{{ review.content }}</th>
-            <th>{{ review.grade }}</th>
-
+            <td>
+              <a href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
+            </td>
+            <td>{{ review.content }}</td>
+            <td>{{ review.grade }}</td>
           </tr>
         {% endfor %}
       </thead>
