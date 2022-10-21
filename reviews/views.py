@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
-from .forms import ReviewForm
-from .models import Review
+from .forms import CommentForm, ReviewForm
+from .models import Review, Comment
 # Create your views here.
 
 def index(request):
@@ -28,8 +28,11 @@ def create(request):
 
 def detail(request, review_pk):
     review = Review.objects.get(pk=review_pk)
+    comment_form = CommentForm()
     context = {
-        "review":review
+        "review":review,
+        'comment_form':comment_form,
+        'comments':review.comment_set.all(),
     }
     return render(request, "reviews/detail.html", context)
 
@@ -55,3 +58,13 @@ def delete(request, review_pk):
     review = Review.objects.get(pk=review_pk)
     review.delete()
     return redirect("reviews:index")
+
+def create_comment(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.review = review
+        comment.user = request.user
+        comment_form.save()
+    return redirect('reviews:detail', review.pk)
