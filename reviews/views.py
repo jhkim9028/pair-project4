@@ -24,3 +24,34 @@ def create(request):
         'form': form,
     }
     return render(request, 'reviews/create.html',context)
+
+
+def detail(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    context = {
+        "review":review
+    }
+    return render(request, "reviews/detail.html", context)
+
+
+def update(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+
+    if request.method == "POST":
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect("reviews:detail", review.pk)
+    else:
+        form = ReviewForm(instance=review)
+    context = {
+        "form": form,
+        "review": review,
+    }
+    return render(request, "reviews/update.html", context)
+
+
+def delete(request, review_pk):
+    review = Review.objects.get(pk=review_pk)
+    review.delete()
+    return redirect("reviews:index")
