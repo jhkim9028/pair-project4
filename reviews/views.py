@@ -68,3 +68,8 @@ def create_comment(request, review_pk):
         comment.user = request.user
         comment_form.save()
     return redirect('reviews:detail', review.pk)
+
+def comments_delete(request, comment_pk,review_pk):
+    comment=Comment.objects.get(pk=comment_pk)
+    comment.delete()
+    return redirect('reviews:detail', review_pk)
