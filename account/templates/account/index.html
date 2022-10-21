@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% block css %}{% endblock css %}
+{% block body %}
+
+  <h1>메인</h1>
+  <p>{{ request.user }}</p>
+{% endblock body %}
+
+{% bootstrap_javascript %}
